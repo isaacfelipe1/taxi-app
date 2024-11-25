@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    /* Linguagem e Ambiente */
+    "target": "ES2020", // Define a versão do JavaScript emitido
+    "module": "commonjs", // Usa CommonJS como formato de módulos (requerido pelo Node.js)
+
+    /* Interoperabilidade de Módulos */
+    "esModuleInterop": true, // Permite usar 'import x from "y"' com módulos CommonJS
+    "forceConsistentCasingInFileNames": true, // Garante consistência no uso de letras maiúsculas e minúsculas
+
+    /* Verificações de Tipos */
+    "strict": true, // Ativa todas as verificações estritas de tipo
+    "skipLibCheck": true, // Ignora verificações de tipos em arquivos de declaração (.d.ts)
+
+    /* Caminhos do Projeto */
+    "outDir": "./dist", // Pasta de saída dos arquivos JavaScript compilados
+    "rootDir": "./src" // Pasta principal do código-fonte
+
+    /* Outras opções */
+    // Adicione outras configurações conforme necessário
+  },
+  "include": ["src/**/*"], // Inclui todos os arquivos TypeScript na pasta "src"
+  "exclude": ["node_modules", "dist"] // Exclui as pastas node_modules e dist
+}

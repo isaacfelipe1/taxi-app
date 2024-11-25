@@ -1,0 +1,30 @@
+
+
+services:
+  backend:
+    build:
+      context: ./taxi-api
+    ports:
+      - "8080:8080" 
+    env_file:
+      - ./taxi-api/.env
+    command: >
+      sh -c "npx prisma migrate deploy &&
+             npx ts-node prisma/seed.ts &&
+             npm start"
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./taxi-app
+    ports:
+      - "8081:3000" 
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY} 
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
