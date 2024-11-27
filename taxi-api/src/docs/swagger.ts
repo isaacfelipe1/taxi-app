@@ -6,14 +6,13 @@ export const swaggerDocs = swaggerJsdoc({
     info: {
       title: 'API de Táxi',
       version: '1.0.0',
-      description:
-        'Documentação da API para solicitação e gerenciamento de corridas de táxi.',
+      description: 'Documentação da API para gerenciamento de corridas.',
     },
     servers: [
       {
-        url: 'http://localhost:8080',
+        url: process.env.NODE_ENV === 'production' ? 'http://backend:8080' : 'http://localhost:8080',
       },
     ],
   },
-  apis: ['src/routes/*.ts'],
+  apis: process.env.NODE_ENV === 'production' ? ['dist/routes/*.js'] : ['src/routes/*.ts'],
 });
