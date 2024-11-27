@@ -58,8 +58,6 @@ export async function getCustomerRides(
 
     return rides;
   } catch (error: any) {
-
-
     if (error.response?.status === 404) {
       throw new Error('O ID do cliente não foi encontrado no banco de dados.');
     } else if (error.response?.status === 400) {
@@ -98,7 +96,6 @@ export async function estimateRide(
 
     return data;
   } catch (error: any) {
-
     if (error.response?.status === 400) {
       throw new Error(
         'Os dados enviados para a API são inválidos. Verifique as informações de entrada.',
@@ -132,7 +129,6 @@ export async function confirmRide(
 
     return response.data.data;
   } catch (error: any) {
-
     if (error.response?.status === 404) {
       throw new Error(
         'O cliente ou motorista não foi encontrado. Verifique os IDs fornecidos.',

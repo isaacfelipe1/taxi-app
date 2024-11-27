@@ -1,10 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { getCustomerRides } from '@/app/services/travelService';
 import { Ride } from '@/app/types/travel';
+import ErrorMessage from '@/app/components/ErrorMessage';
 
 export default function HistoricoViagens() {
+  const router = useRouter();
   const [userId, setUserId] = useState<string>('');
   const [motoristaSelecionado, setMotoristaSelecionado] =
     useState<string>('todos');
@@ -14,11 +17,27 @@ export default function HistoricoViagens() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [buscou, setBuscou] = useState<boolean>(false);
+  const [driverId, setDriverId] = useState<string | null>(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
 
   const totalPages = Math.ceil(viagensFiltradas.length / itemsPerPage);
+
+  useEffect(() => {
+    const id = localStorage.getItem('driverId');
+    setDriverId(id);
+
+    if (!id) {
+      router.push('/');
+    }
+  }, [router]);
+
+  const handleRemoveDriverId = () => {
+    localStorage.removeItem('driverId');
+    setDriverId(null);
+    router.push('/');
+  };
 
   const atualizarMotoristas = async (clienteId: string) => {
     if (!clienteId) {
@@ -37,7 +56,6 @@ export default function HistoricoViagens() {
       const data: Ride[] = await getCustomerRides(clienteId);
 
       if (data.length === 0) {
-        setError('Nenhum registro encontrado para o ID fornecido.');
         setMotoristas(['todos']);
         setViagensOriginais([]);
         setViagensFiltradas([]);
@@ -46,7 +64,7 @@ export default function HistoricoViagens() {
       }
 
       const motoristasUnicos = Array.from(
-        new Set(data.map((viagem) => viagem.driver?.name).filter(Boolean))
+        new Set(data.map((viagem) => viagem.driver?.name).filter(Boolean)),
       );
 
       setMotoristas(['todos', ...motoristasUnicos]);
@@ -55,7 +73,7 @@ export default function HistoricoViagens() {
       setBuscou(true);
     } catch (err: any) {
       setError(
-        'Erro ao carregar os dados. Verifique o ID do cliente e tente novamente.'
+        'Erro ao carregar os dados. Verifique o ID do cliente e tente novamente.',
       );
       setBuscou(false);
     } finally {
@@ -74,7 +92,7 @@ export default function HistoricoViagens() {
       motoristaSelecionado === 'todos'
         ? viagensOriginais
         : viagensOriginais.filter(
-            (viagem) => viagem.driver?.name === motoristaSelecionado
+            (viagem) => viagem.driver?.name === motoristaSelecionado,
           );
 
     setViagensFiltradas(viagensFiltradas);
@@ -103,13 +121,21 @@ export default function HistoricoViagens() {
 
   const paginatedViagens = viagensFiltradas.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
   return (
     <div className="min-h-screen flex flex-col p-3">
-      <header className="text-[#0dab77] py-4 px-6">
+      <header className="text-[#0dab77] py-4 px-6 flex justify-between items-center">
         <h1 className="text-2xl font-bold">Histórico de Viagens</h1>
+        {driverId && (
+          <button
+            onClick={handleRemoveDriverId}
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+          >
+            Sair
+          </button>
+        )}
       </header>
 
       <main className="flex-1 overflow-y-auto">
@@ -144,11 +170,8 @@ export default function HistoricoViagens() {
             </button>
           </div>
 
-          {error && (
-            <div className="bg-red-500 text-white p-2 rounded mb-4">
-              {error}
-            </div>
-          )}
+          {/* Mensagem de erro utilizando o componente ErrorMessage */}
+          {error && <ErrorMessage message={error} />}
 
           {loading && (
             <div className="text-center text-gray-500">Carregando...</div>
@@ -156,6 +179,7 @@ export default function HistoricoViagens() {
 
           {!loading && buscou && paginatedViagens.length > 0 && (
             <>
+              {/* Exibição para Desktop */}
               <div className="hidden md:block">
                 <table className="w-full border-collapse border border-gray-200">
                   <thead className="bg-gray-100">
@@ -175,7 +199,7 @@ export default function HistoricoViagens() {
                         <td className="border p-2">
                           {viagem.created_at
                             ? new Date(viagem.created_at).toLocaleString(
-                                'pt-BR'
+                                'pt-BR',
                               )
                             : 'Data não disponível'}
                         </td>
@@ -194,66 +218,25 @@ export default function HistoricoViagens() {
                   </tbody>
                 </table>
               </div>
-              <div className="grid grid-cols-1 gap-4 md:hidden">
+
+              {/* Exibição para Mobile */}
+              <div className="block md:hidden">
                 {paginatedViagens.map((viagem) => (
                   <div
                     key={viagem.id}
-                    className="border rounded p-4 shadow hover:shadow-lg transition"
+                    className="p-4 mb-4 bg-white shadow-md rounded"
                   >
+                    <h2 className="font-bold">
+                      {viagem.origin} → {viagem.destination}
+                    </h2>
                     <p>
-                      <strong>Data/Hora:</strong>{' '}
-                      {viagem.created_at
-                        ? new Date(viagem.created_at).toLocaleString('pt-BR')
-                        : 'Data não disponível'}
+                      Data:{' '}
+                      {new Date(viagem.created_at).toLocaleDateString('pt-BR')}
                     </p>
-                    <p>
-                      <strong>Motorista:</strong>{' '}
-                      {viagem.driver?.name || 'Motorista não disponível'}
-                    </p>
-                    <p>
-                      <strong>Origem:</strong> {viagem.origin}
-                    </p>
-                    <p>
-                      <strong>Destino:</strong> {viagem.destination}
-                    </p>
-                    <p>
-                      <strong>Distância:</strong> {viagem.distance}
-                    </p>
-                    <p>
-                      <strong>Duração:</strong> {viagem.duration}
-                    </p>
-                    <p>
-                      <strong>Valor:</strong> R$ {viagem.cost.toFixed(2)}
-                    </p>
+                    <p>Motorista: {viagem.driver?.name || 'Não disponível'}</p>
+                    <p>Valor: R$ {viagem.cost.toFixed(2)}</p>
                   </div>
                 ))}
-              </div>
-              <div className="flex justify-between items-center mt-4">
-                <button
-                  onClick={handlePrevPage}
-                  disabled={currentPage === 1}
-                  className={`px-4 py-2 rounded ${
-                    currentPage === 1
-                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      : 'bg-[#0dab77] text-white hover:bg-[#00b780]'
-                  }`}
-                >
-                  Página Anterior
-                </button>
-                <span>
-                  Página {currentPage} de {totalPages}
-                </span>
-                <button
-                  onClick={handleNextPage}
-                  disabled={currentPage === totalPages}
-                  className={`px-4 py-2 rounded ${
-                    currentPage === totalPages
-                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      : 'bg-[#0dab77] text-white hover:bg-[#00b780]'
-                  }`}
-                >
-                  Próxima Página
-                </button>
               </div>
             </>
           )}

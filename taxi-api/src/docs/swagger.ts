@@ -10,9 +10,15 @@ export const swaggerDocs = swaggerJsdoc({
     },
     servers: [
       {
-        url: process.env.NODE_ENV === 'production' ? 'http://backend:8080' : 'http://localhost:8080',
+        url:
+          process.env.NODE_ENV === 'production'
+            ? 'http://backend:8080'
+            : 'http://localhost:8080',
       },
     ],
   },
-  apis: process.env.NODE_ENV === 'production' ? ['dist/routes/*.js'] : ['src/routes/*.ts'],
+  apis:
+    process.env.NODE_ENV === 'production'
+      ? ['dist/routes/*.js']
+      : ['src/routes/*.ts'],
 });

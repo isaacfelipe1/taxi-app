@@ -40,10 +40,7 @@ export default function Taxi() {
           filter: 'brightness(95%) contrast(105%)',
         }}
       />
-      <
-      >
-       
-      </>
+      <></>
     </div>
   );
 }

@@ -5,12 +5,14 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { confirmRide } from '@/app/services/travelService';
 import { FaCar, FaUser, FaStar } from 'react-icons/fa';
+import SuccessMessage from '@/app/components/SuccessMessage';
 
 export default function Opcoes() {
   const { travelData } = useTravelContext();
   const router = useRouter();
   const [loadingDriverId, setLoadingDriverId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (!travelData) {
@@ -40,9 +42,13 @@ export default function Opcoes() {
     setError(null);
 
     try {
+      localStorage.setItem('driverId', driverId.toString());
+
       await confirmRide(ride.customer_id, driverId);
-      alert('Corrida confirmada com sucesso!');
-      router.push('/historico');
+      setSuccessMessage('Corrida confirmada com sucesso!');
+      setTimeout(() => {
+        router.push('/historico');
+      }, 2000);
     } catch (err: any) {
       console.error('Erro ao confirmar a corrida:', err.message);
       setError('Erro ao confirmar a corrida. Tente novamente.');
@@ -53,6 +59,12 @@ export default function Opcoes() {
 
   return (
     <div className="flex flex-col h-screen overflow-hidden">
+      {successMessage && (
+        <SuccessMessage
+          message={successMessage}
+          onClose={() => setSuccessMessage(null)}
+        />
+      )}
       <div className="flex flex-1 flex-col lg:flex-row overflow-hidden gap-4 p-4">
         <img
           src={static_map}

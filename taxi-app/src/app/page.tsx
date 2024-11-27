@@ -22,7 +22,6 @@ export default function SolicitarViagem() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  
 
   const handleEstimativa = async () => {
     if (!formData.userId || !formData.origem || !formData.destino) {
@@ -47,7 +46,9 @@ export default function SolicitarViagem() {
 
       router.push('/opcoes');
     } catch (err: any) {
-      setError('Erro, os endereços de origem e destino não podem ser o mesmo endereço.');
+      setError(
+        'Erro, os endereços de origem e destino não podem ser o mesmo endereço.',
+      );
     } finally {
       setLoading(false);
     }

@@ -8,9 +8,9 @@ import cors from 'cors';
 const app = express();
 
 const allowedOrigins = [
-  'http://localhost', 
-  'http://localhost:3000', 
-  'http://frontend:80', 
+  'http://localhost',
+  'http://localhost:3000',
+  'http://frontend:80',
   'http://backend:8080',
 ];
 
@@ -25,7 +25,7 @@ app.use(
     },
     methods: ['GET', 'POST', 'PATCH'],
     allowedHeaders: ['Content-Type'],
-    credentials: true, 
+    credentials: true,
   })
 );
 
