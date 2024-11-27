@@ -18,11 +18,11 @@ export default function SolicitarViagem() {
   const router = useRouter();
   const { setTravelData } = useTravelContext();
   const formRef = useRef<HTMLDivElement>(null);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value.trim() }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
+  
 
   const handleEstimativa = async () => {
     if (!formData.userId || !formData.origem || !formData.destino) {
@@ -69,7 +69,6 @@ export default function SolicitarViagem() {
               {error}
             </div>
           )}
-
           <form
             onSubmit={(e) => {
               e.preventDefault();
