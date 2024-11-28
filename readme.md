@@ -2,16 +2,13 @@
 ```markdown
 # Guia para Rodar o Projeto 
 
-## Configuração do Ambiente
-
-    -Copie o arquivo `.env.example` e renomeie-o para `.env`:
+## clona o repositório 
+ [Repositório](https://github.com/isaacfelipe1/taxi-app.git)
 
 # Configure as variáveis de ambiente no arquivo `.env`:
-
    - Abra o arquivo `.env` e substitua os valores pelos valores apropriados.
    - Exemplo:
      GOOGLE_API_KEY=" sua chave do  API Routes"
-
 # Verifique se o Docker e o Docker Compose estão instalados:
    - Docker:
      ```bash
@@ -21,7 +18,6 @@
      ```bash
      docker-compose --version
      ```
-
 ## Rodar o Ambiente
 
 ### Suba os serviços com o Docker Compose:**
