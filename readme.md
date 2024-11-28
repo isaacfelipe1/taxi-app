@@ -1,9 +1,14 @@
 
 ```markdown
-# Guia para Rodar o Projeto 
+# Guia para Rodar o Projeto
 
-## clona o repositório 
- [Repositório](https://github.com/isaacfelipe1/taxi-app.git)
+## Passo 1: Clonar o Repositório
+Clone o repositório para a sua máquina local utilizando o seguinte link:
+
+[https://github.com/isaacfelipe1/taxi-app.git](https://github.com/isaacfelipe1/taxi-app.git)
+
+```bash
+git clone https://github.com/isaacfelipe1/taxi-app.git
 
 # Configure as variáveis de ambiente no arquivo `.env`:
    - Abra o arquivo `.env` e substitua os valores pelos valores apropriados.
