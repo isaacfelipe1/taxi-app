@@ -36,9 +36,16 @@ git clone https://github.com/isaacfelipe1/taxi-app.git
 ## Acesse os serviços:
    - Frontend: Abra o navegador e acesse `http://localhost:80`.
    - Backend (API): Acesse `http://localhost:8080`.
+## teste a aplicação no swagger ou pela interface
+   
+  - ID: 123
+  - origin: Avenida Paulista, 1000, São Paulo, SP
+  - destination: Praça da Sé, São Paulo, SP
 
 ## Solução de Problemas
 
 ### Problema: Portas em uso 
    - Certifique-se de que as portas necessárias ( `80`, `8080`) não estão sendo usadas por outros serviços
+  
+
 ---
