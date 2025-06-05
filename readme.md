@@ -13,7 +13,7 @@ git clone https://github.com/isaacfelipe1/taxi-app.git
    - Abra o arquivo `.env` e substitua os valores pelos valores apropriados.
    - Exemplo:
      GOOGLE_API_KEY=" sua chave do  API Routes"
-# Verifique se o Docker e o Docker Compose estão instalados:
+# Verifique se o Docker e o Docker Compose estão instalados na sua maquina:
    - Docker:
      ```bash
      docker --version
@@ -24,7 +24,7 @@ git clone https://github.com/isaacfelipe1/taxi-app.git
      ```
 ## Rodar o Ambiente
 
-### Suba os serviços com o Docker Compose:**
+### Suba os serviços com o Docker Compose:
    - Certifique-se de estar na raiz do projeto (onde está o arquivo `docker-compose.yml`) e execute:
      ```bash
      docker-compose up
